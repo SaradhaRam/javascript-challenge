@@ -31,14 +31,27 @@ function runEnter() {
 
     // Select the input element and get the raw HTML node
     var dateElement = d3.select("#datetime");
+    var stateElement = d3.select('#state');
+    var cityElement = d3.select('#city');
+    console.log("cityElement is :", cityElement)
 
     // Get the value property of the input element
     var dateValue = dateElement.property("value");
+    var stateValue = stateElement.property('value');
+    var cityValue = cityElement.property('value');
+    console.log("cityValue is", cityValue)
+    console.log("cute is cute ", dateValue.length);
     var filterData = tableData
 
     //use filter() and compare the filtered data with input value
     if (dateValue.length > 0) {
         filterData = filterData.filter(data => data.datetime === dateValue);
+    }
+    if (stateValue != "ALL") {
+        filterData = filterData.filter(data => data.state === stateValue);
+    }
+    if (cityValue !== "") {
+        filterData = filterData.filter(data => data.city === cityValue);
     }
 
     //select all tr and tds and append the filtered tableData
