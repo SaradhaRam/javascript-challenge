@@ -30,19 +30,35 @@ function runEnter() {
     d3.event.preventDefault();
 
     // Select the input element and get the raw HTML node
-    var inputElement = d3.select("#datetime");
+    var dateElement = d3.select("#datetime");
+    var stateElement = d3.select('#state');
+    var cityElement = d3.select('#city');
+    console.log("cityElement is :", cityElement)
 
     // Get the value property of the input element
-    var inputValue = inputElement.property("value");
-    //console.log(inputValue);
+    var dateValue = dateElement.property("value");
+    var stateValue = stateElement.property('value');
+    var cityValue = cityElement.property('value');
+    console.log("cityValue is", cityValue)
+    console.log("cute is cute ", dateValue.length);
+    var filterData = tableData
 
-    //use filter and compare the filtered data with input value
-    var filteredData = tableData.filter(data => data.datetime === inputValue);
-    //console.log(filteredData);
+    //use filter() and compare the filtered data with input value
+    if (dateValue.length > 0) {
+        filterData = filterData.filter(data => data.datetime === dateValue);
+    }
+    if (stateValue != "ALL") {
+        filterData = filterData.filter(data => data.state === stateValue);
+    }
+    if (cityValue !== "") {
+        filterData = filterData.filter(data => data.city === cityValue);
+    }
 
     //select all tr and tds and append the filtered tableData
     var rows = tbody.selectAll("tbody tr")
-        .data(filteredData, function(d) { return d.datetime, d.city, d.state, d.country, d.shape, d.durationMinutes, d.comments; });
+        .data(filterData, function(d) {
+            return d.datetime, d.city, d.state, d.country, d.shape, d.durationMinutes, d.comments;
+        });
 
     rows.enter()
         .append('tr')
